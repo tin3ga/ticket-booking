@@ -11,6 +11,11 @@ django = "4.2.10"
 python-dotenv = "^1.0.1"
 django-bootstrap-v5 = "^1.0.11"
 pillow = "^10.2.0"
+django-crispy-forms = "^2.1"
+psycopg2-binary = "^2.9.9"
+boto3 = "^1.34.49"
+django-storages = "^1.14.2"
+crispy-bootstrap5 = "^2024.2"
 
 
 [build-system]
