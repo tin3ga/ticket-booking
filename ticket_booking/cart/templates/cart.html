@@ -1,33 +1,36 @@
 {% extends 'base.html' %}
 {% block title %}Cart | ticket app {% endblock %}
 {% block content %}
-{% if not cart_items %}
+{% if not cart_events %}
 <div class="container text-center py-5">
     Cart is empty!<br>
-    <a href="{% url 'home' %}">Discover new items</a>
+    <a href="{% url 'home' %}">Discover new events</a>
 </div>
 {% else %}
 <div class="container-fluid px-3 py-5 col-sm-10 col-md-7 cart">
     <div class="h3 fw-bold">Your Cart</div>
 
+    {% for event in cart_events %}
+
     <div class="order d-flex justify-content-between p-2">
-        <h5 class="name">{{ item.name }}</h5>
-        {% for key, value in quantity.items %}
-        {% if key == item.id|slugify %}
-        <p class="quantity">x{{ value }}</p>
+        <h5 class="name">{{ event.name }}</h5>
+        {% for key, value in tickets.items %}
+        {% if key == event.id|slugify %}
+        <p class="tickets">x{{ value.tickets }} {{ value.ticket_type }}</p>
+        <p>Kes {{ value.ticket_price }}</p>
         {% endif %}
         {% endfor %}
-        <p>Kes {{ item.price }}</p>
-        <a href="">
+        <a href="{% url 'delete_from_cart' event.id %}">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-trash3-fill"
                  viewBox="0 0 16 16">
                 <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
             </svg>
         </a>
     </div>
+    {% endfor %}
 
     <div class="text-end p-1">
-        <div class="pt-2">Total price: <span class="fw-bold h5">Kes</span>
+        <div class="pt-2">Total price: <span class="fw-bold h5">Kes {{ total_price }}</span>
             <span id="total" class="fw-bold h5"></span>
         </div>
     </div>
