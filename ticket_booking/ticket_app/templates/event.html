@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container p-5">
+
+    <div class="row g-3">
+        <div class="col-md-5 ps-3 col-lg-4 order-md-last p-0 order-1">
+            <div class="d-grid gap-2 mb-5">
+                <div class="d-block mb-5">
+                    <h2><span>{{ event.name }}</span></h2>
+                    <h5>{{ event.date }}</h5>
+                </div>
+                <h2>Ticket Prices</h2>
+                <form action="{% url 'add_to_cart' event.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="d-flex d-flex-inline justify-content-between">
+                        <p class="align-self-center" >Regular</p>
+                        <div class="align-self-center">
+                            <span class="h5">{{ event.regular_price }}</span>
+                        </div>
+                        <div class="align-self-center">
+
+                            <label for="select_regular">Qty</label>
+                            <select id="select_regular" name="select_regular">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+
+                            </select>
+                        </div>
+                        <div class="align-self-center">
+                            <input type="submit" class="btn btn-success" value="Add to Cart">
+                        </div>
+                    </div>
+                </form>
+
+                <form action="{% url 'add_to_cart' event.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="d-flex d-flex-inline justify-content-between">
+                        <p class="align-self-center">VIP</p>
+                        <div class="align-self-center">
+                            <span class="h5">{{ event.vip_price }}</span>
+                        </div>
+                        <div class="align-self-center">
+
+                            <label for="select_vip">Qty</label>
+                            <select id="select_vip" name="select_vip">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <div class="align-self-center">
+                            <input type="submit" class="btn btn-success" value="Add to Cart">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="col-md-12 px-2 col-lg-12 order-md-last p-0 order-1">
+            <div class="col-md-12">
+                <div class="h-100 px-4 py-4 rounded-3 bg-body-tertiary">
+                    <h2>Event Description</h2>
+
+                    <p>✔ item</p>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7 col-lg-4 p-0">
+            <div class="card mb-3 border-0">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-body p-1 mb-5">
+                            <img src="{{ event.image.url }}" width="300px"
+                                 class="img-fluid mx-auto d-block" alt="event image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+

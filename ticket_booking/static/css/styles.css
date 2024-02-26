@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
+:root {
+    --bg-primary: #191919;
+    --bg-secondary: #750E21;
+
+
+
+}
+div{
+    /*outline: 2px solid palegreen;*/
+}
+body{
+    font-family: 'Abel', sans-serif;
+
+}
+header{
+    font-size: large;
+    font-family: 'PT Serif', serif;
+
+
+}
+header a:link{
+    text-decoration: none;
+
+}
+
+
+
+.card img {
+    opacity: 90%;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.card :hover {
+    opacity: 100%;
+}
+
+.event_name {
+    font-size: large;
+    font-family: 'PT Serif', serif;
+
+
+}
+.event_date {
+    font-family: 'PT Serif', serif;
+    font-weight: bold;
+}
+.event_price{
+    font-family: 'PT Serif', serif;
+    font-weight: bold;
+}

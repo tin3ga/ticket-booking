@@ -1,0 +1,14 @@
+.idea
+.vscode/*
+# Environments
+ticket_booking/.env
+.venv
+env/
+venv/
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Welcome | ticket app {% endblock %}
+
+{% block content %}
+
+<div class="album py-5 ">
+    <div class="container cards p-3" id="cards">
+        <h2 class="text-left py-4">Latest Events</h2>
+        <div class="row row-cols-1 row-cols-sm-3 row-cols-md-3 row-cols-lg-5 px-2 g-3">
+            {% for event in events %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    <img src="{{ event.image.url }}" alt="event image">
+                    <div class="card-body">
+                        <h5><span class="badge bg-dark event_date">{{ event.date }}</span></h5>
+                        <p class="event_name">{{ event.name }}</p>
+                        <p class="event_price"> From KES {{ event.regular_price }} - KES {{ event.vip_price }}</p>
+                        <p class="event_location">{{ event.location }}</p>
+                        <div class="d-flex flex-column mt-4">
+                            <a href="{{ event.get_absolute_url }}" class="btn btn-dark btn-sm">Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
