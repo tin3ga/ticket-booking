@@ -6,11 +6,11 @@
                 <li><a href="{% url 'home' %}" class="nav-link px-2 text-white">Home</a></li>
             </ul>
             {% if not user.is_authenticated %}
-            <div class="text-end">
-                <a href="#">
+             <div class="text-end">
+                <a href="{% url 'login' %}">
                     <button type="button" class="btn btn-outline-light me-2">Login</button>
                 </a>
-                <a href="#">
+                <a href="{% url 'register' %}">
                     <button type="button" class="btn btn-light">Sign-up</button>
                 </a>
             </div>
@@ -31,7 +31,7 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></li>
                 </ul>
             </div>
             <div>
