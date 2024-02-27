@@ -21,3 +21,7 @@ class Event(models.Model):
 
     def get_absolute_url(self):
         return f"/event/{self.slug}"
+
+    def update_available_tickets(self, tickets):
+        self.available_tickets -= tickets
+        self.save()
