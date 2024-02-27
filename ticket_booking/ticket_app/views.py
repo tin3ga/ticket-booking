@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+
 from .models import Event
 from .forms import RegisterUserForm, LoginForm
 
@@ -15,6 +17,7 @@ def home(request):
     return render(request, 'index.html', context=context)
 
 
+@login_required(login_url='/login/')
 def event(request, slug):
     event = get_object_or_404(Event, slug=slug)
     context = {

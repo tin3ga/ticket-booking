@@ -11,10 +11,11 @@ class Cart:
             cart = self.session['session_key'] = {}
         self.cart = cart
 
-    def add(self, event, tickets, ticket_type, ticket_price):
+    def add(self, event, tickets, ticket_type, ticket_price, price_id):
         event_id = str(event.id)
         tickets = str(tickets)
         ticket_price = str(ticket_price)
+        price_id = str(price_id)
 
         # Logic
 
@@ -22,6 +23,7 @@ class Cart:
             'tickets': int(tickets),
             'ticket_type': str(ticket_type),
             'ticket_price': float(ticket_price),
+            'price_id': str(price_id),
         }
 
         self.session.modified = True

@@ -10,7 +10,9 @@ class Event(models.Model):
     location = models.CharField(max_length=100)
     date = models.DateField()
     regular_price = models.DecimalField(max_digits=10, decimal_places=2)
+    regular_stripe_id = models.CharField(max_length=100)
     vip_price = models.DecimalField(max_digits=10, decimal_places=2)
+    vip_stripe_id = models.CharField(max_length=100)
     total_tickets = models.IntegerField()
     available_tickets = models.IntegerField()
 
