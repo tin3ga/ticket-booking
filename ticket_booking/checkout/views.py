@@ -2,11 +2,15 @@ import time
 import stripe
 import json
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+
+from cart.cart import Cart
+from ticket_app.models import Event
+from .models import UserOrder, Ticket
 
 
 # Create your views here.
@@ -14,7 +18,6 @@ def stripe_checkout(request):
     stripe.api_key = settings.STRIPE_SECRET_KEY_TEST
     if request.method == 'POST':
         price_ids = request.POST.get('price_ids')
-        print(price_ids)
         data = json.loads(price_ids.replace("'", '"'))
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=['card'],
@@ -37,6 +40,32 @@ def payment_successful(request):
     payment_status = session["payment_status"]
     payment_intent = session["payment_intent"]
     customer = stripe.Customer.retrieve(session.customer)
+
+    cart = Cart(request)
+    cart_events = cart.get_cart()
+    tickets = cart.get_tickets()
+
+    order = UserOrder(
+        user=request.user,
+        email=customer_email,
+        order_number=payment_intent,
+        payment_status=payment_status
+    )
+    order.save()
+
+    for k, v in tickets.items():
+        event = get_object_or_404(Event, id=int(k))
+        tickets = v['tickets']
+        ticket_details = Ticket(
+            user=order,
+            order_number=payment_intent,
+            event_name=event.name,
+            tickets=tickets,
+            ticket_type=v['ticket_type'],
+
+        )
+        event.update_available_tickets(tickets)
+        ticket_details.save()
 
     return render(request, 'payment_successful.html', {'customer': customer})
 
@@ -63,6 +92,6 @@ def stripe_webhook(request):
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
         session_id = session.get('id', None)
-        print('got here')
+
         return redirect('payment_successful')
     return HttpResponse(status=200)
