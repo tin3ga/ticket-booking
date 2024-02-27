@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}myTickets | ticket app {% endblock %}
+
+{% block content %}
+
+<div class="container-fluid p-5">
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">event</th>
+        <th scope="col">tickets</th>
+        <th scope="col">status</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for ticket in tickets %}
+    <tr>
+        <td>{{ ticket.event_name }}</td>
+        <td>{{ ticket.tickets }}</td>
+        <td>{{ ticket.ticket_type }}</td>
+    </tr>
+    </tbody>
+    {% endfor %}
+</table>
+</div>
+
+{% endblock %}

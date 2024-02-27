@@ -27,7 +27,7 @@
                     {% if user.is_superuser %}
                     <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin Page</a></li>
                     {% endif %}
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'my_tickets' %}">mytickets</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>

@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Event
 from .forms import RegisterUserForm, LoginForm
+from checkout.models import Ticket, UserOrder
 
 
 # Create your views here.
@@ -24,6 +25,14 @@ def event(request, slug):
         'event': event,
     }
     return render(request, 'event.html', context=context)
+
+
+def my_tickets(request):
+    tickets = Ticket.objects.filter(customer__user=request.user.id)
+    context = {
+        'tickets': tickets,
+    }
+    return render(request, 'mytickets.html', context=context)
 
 
 def register(request):
