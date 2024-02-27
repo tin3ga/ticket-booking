@@ -28,7 +28,7 @@ def event(request, slug):
 
 
 def my_tickets(request):
-    tickets = Ticket.objects.filter(customer__user=request.user.id)
+    tickets = Ticket.objects.filter(order__user=request.user.id)
     context = {
         'tickets': tickets,
     }

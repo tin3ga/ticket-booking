@@ -16,7 +16,7 @@ class UserOrder(models.Model):
 
 
 class Ticket(models.Model):
-    customer = models.ForeignKey(UserOrder, on_delete=models.CASCADE)
+    order = models.ForeignKey(UserOrder, on_delete=models.CASCADE)
     order_number = models.CharField(max_length=50)
     event_name = models.CharField()
     tickets = models.IntegerField()
