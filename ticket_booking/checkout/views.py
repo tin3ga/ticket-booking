@@ -57,7 +57,7 @@ def payment_successful(request):
         event = get_object_or_404(Event, id=int(k))
         tickets = v['tickets']
         ticket_details = Ticket(
-            user=order,
+            order=order,
             order_number=payment_intent,
             event_name=event.name,
             tickets=tickets,
