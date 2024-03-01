@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from .models import Event
 from .forms import RegisterUserForm, LoginForm
@@ -58,6 +59,8 @@ def user_login(request):
             if user:
                 login(request, user)
                 return redirect('home')
+            else:
+                messages.error(request, 'Invalid username/password!')
     else:
         form = LoginForm()
     return render(request, 'registration/login.html', {'form': form})

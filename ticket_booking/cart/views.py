@@ -5,6 +5,7 @@ from django.contrib import messages
 
 from .cart import Cart
 from ticket_app.models import Event
+from checkout.models import Ticket
 
 
 # Create your views here.
@@ -24,7 +25,7 @@ def cart(request):
                     "quantity": v['tickets']
                 }
         price_ids.append(details)
-    print(price_ids)
+
 
     context = {
         'cart_events': cart_events,
@@ -68,9 +69,19 @@ def add_to_cart(request, event_id):
             'ticket_type': ticket_type,
             'price': ticket_price,
         }
-    cart.add(event, tickets, ticket_type, ticket_price, price_id)
-    print(data)
-    messages.success(request, f'{event.name} Tickets Successfully Added To Cart')
+
+    tickets_qs = Ticket.objects.filter(order__user=request.user.id, event_name=event)
+
+    num_reserved_tickets = int(tickets)
+    for t in tickets_qs:
+        num_reserved_tickets += t.tickets
+    if num_reserved_tickets <= 5:
+        cart.add(event, tickets, ticket_type, ticket_price, price_id)
+        messages.success(request, f'{event.name} Tickets Successfully Added To Cart')
+    else:
+        messages.success(request,
+                         f'Maximum number of individual tickets is 5. You have {num_reserved_tickets} reserved for this event')
+
     return redirect('cart')
 
 

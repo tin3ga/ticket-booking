@@ -69,3 +69,6 @@ class Cart:
             del self.cart[event_id]
 
         self.session.modified = True
+
+    def clear_cart(self, request):
+        cart = self.session['session_key'] = {}
