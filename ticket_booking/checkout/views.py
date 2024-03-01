@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from django.core.mail import send_mail
 
 from cart.cart import Cart
 from ticket_app.models import Event
@@ -66,6 +67,24 @@ def payment_successful(request):
         )
         event.update_available_tickets(tickets)
         ticket_details.save()
+
+    tickets = Ticket.objects.filter(order__user=request.user.id)
+
+    msg_body = "\r\n".join([f'{ticket.event_name}  x {ticket.tickets} - {ticket.ticket_type}' for ticket in tickets])
+
+    message = (f'You have reserved the following tickets:\n'
+               f'{msg_body}')
+    send_mail(
+        "Ticket Reservation",
+        message,
+        settings.EMAIL_HOST_USER,
+        [customer_email],
+        fail_silently=False,
+    )
+
+    # clear cart
+
+    cart.clear_cart(request)
 
     return render(request, 'payment_successful.html', {'customer': customer})
 
