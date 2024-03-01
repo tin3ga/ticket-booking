@@ -26,7 +26,6 @@ def cart(request):
                 }
         price_ids.append(details)
 
-
     context = {
         'cart_events': cart_events,
         'tickets': num_tickets,
@@ -78,11 +77,13 @@ def add_to_cart(request, event_id):
     if num_reserved_tickets <= 5:
         cart.add(event, tickets, ticket_type, ticket_price, price_id)
         messages.success(request, f'{event.name} Tickets Successfully Added To Cart')
+        return redirect('cart')
     else:
         messages.success(request,
-                         f'Maximum number of individual tickets is 5. You have {num_reserved_tickets} reserved for this event')
+                         f'Maximum number of tickets allowed is 5. You are trying to reserve {num_reserved_tickets} tickets for this event')
 
-    return redirect('cart')
+        cart.clear_cart(request)
+        return redirect('home')
 
 
 def delete_from_cart(request, event_id):
