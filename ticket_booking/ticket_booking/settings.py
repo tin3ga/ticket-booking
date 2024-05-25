@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.vercel.app', '.now.sh', '',]
 
 # Application definition
 
-SITE_ID = os.getenv("SITE_ID")
+SITE_ID = 3
 
 INSTALLED_APPS = [
     'django.contrib.admin',
