@@ -2,6 +2,7 @@
 .vscode/*
 # Environments
 ticket_booking/.env
+.env
 .venv
 env/
 venv/

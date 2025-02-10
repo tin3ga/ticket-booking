@@ -1,0 +1,9 @@
+.idea
+.venv
+.vscode
+**/build_files.sh
+**/vercel.json
+**/media/
+**/.env
+ticket_booking/**/migrations/
+ticket_booking/**/__pycache__/
