@@ -1,0 +1,68 @@
+services:
+  web:
+    build: .
+    container_name: ticket-booking
+    # ports:
+    #   - "8000:8000"
+    env_file:
+      - ./.env
+    volumes:
+      - media:/app/media
+    depends_on:
+      - db
+    entrypoint: ["/app/entrypoint.sh"]
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    networks:
+      - ticket-booking
+
+  db:
+    image: postgres:15
+    container_name: postgres-container
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: postgres
+    env_file:
+      - ./.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ticket-booking
+
+  stripe:
+    image: stripe/stripe-cli
+    container_name: stripe-container
+    depends_on:
+      - web
+    env_file:
+      - ./.env
+    volumes:
+      - stripe_data:/app
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      [
+        "stripe listen --api-key ${STRIPE_API_KEY} --device-name ${STRIPE_DEVICE_NAME} --forward-to localhost:8000/stripe_webhook",
+      ]
+    networks:
+      - ticket-booking
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-reverse-proxy
+    depends_on:
+      - web
+      - stripe
+    networks:
+      - ticket-booking
+    ports:
+      - "8000:8000" # Expose only one public port
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro # Mount config file
+volumes:
+  media:
+  postgres_data:
+  stripe_data:
+networks:
+  ticket-booking:
