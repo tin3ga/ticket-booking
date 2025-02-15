@@ -32,7 +32,11 @@ DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = ["*", ".ngrok-free.app"]
 
-CSRF_TRUSTED_ORIGINS = ["https://*.ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "https://*.ngrok-free.app",
+]
 
 
 # Application definition

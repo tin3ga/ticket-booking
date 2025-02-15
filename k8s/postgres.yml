@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ticket-booking-db
+  labels:
+    app: ticket-booking-db
+spec:
+  selector:
+    matchLabels:
+      app: ticket-booking-db
+  template:
+    metadata:
+      labels:
+        app: ticket-booking-db
+    spec:
+      containers:
+        - name: ticket-booking-db
+          image: postgres:15
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: ticket-booking-db
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgredb
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          ports:
+            - containerPort: 5432
+      restartPolicy: Always
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: ticket-booking-db

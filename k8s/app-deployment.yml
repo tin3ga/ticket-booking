@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-booking
+  labels:
+    app: ticket-booking
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ticket-booking
+  template:
+    metadata:
+      labels:
+        app: ticket-booking
+    spec:
+      initContainers:
+        - name: wait-for-db
+          image: busybox
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Waiting for PostgreSQL to be ready..."
+              until nc -z ticket-booking-db 5432; do
+                echo "Waiting for PostgreSQL..."
+                sleep 2
+              done
+              echo "PostgreSQL is up!"
+      containers:
+        - name: ticket-booking
+          image: tinegagideon/ticket-booking
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: ticket-booking
+
+          command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - name: media
+              mountPath: /app/media
+
+      restartPolicy: Always
+
+      volumes:
+        - name: media
+          persistentVolumeClaim:
+            claimName: ticket-booking

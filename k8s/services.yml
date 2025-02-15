@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticket-booking
+spec:
+  selector:
+    app: ticket-booking
+  ports:
+    - port: 8000
+      protocol: TCP
+      targetPort: 8000
+      nodePort: 30007
+  type: NodePort
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticket-booking-db
+spec:
+  selector:
+    app: ticket-booking-db
+  ports:
+    - port: 5432
+      protocol: TCP
+      targetPort: 5432
+      nodePort: 30010
+  type: NodePort

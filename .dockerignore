@@ -7,3 +7,4 @@
 **/.env
 ticket_booking/**/migrations/
 ticket_booking/**/__pycache__/
+k8s/

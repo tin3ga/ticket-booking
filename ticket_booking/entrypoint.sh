@@ -24,7 +24,11 @@ set -e
 
 # Run migrations
 echo "Running migrations..."
-python manage.py migrate
+python manage.py migrate --fake-initial
+
+echo "Running migrations for ticket app..."
+python manage.py makemigrations ticket_app
+python manage.py migrate ticket_app
 
 # Create superuser if not exists
 echo "Creating superuser..."

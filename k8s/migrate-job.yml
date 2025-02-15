@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ticket-booking-migrate
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrate
+          image: tinegagideon/ticket-booking
+          command: ["/app/entrypoint.sh"]
+          envFrom:
+            - configMapRef:
+                name: ticket-booking

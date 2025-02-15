@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.12-slim AS builder
 
 WORKDIR /app
 
@@ -15,16 +15,28 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 
 ENV PATH="/root/.local/bin:$PATH"
 
-RUN poetry config virtualenvs.create false
+RUN poetry config virtualenvs.in-project true
 
 COPY poetry.lock pyproject.toml ./
 
-RUN poetry install 
+RUN poetry install
+
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY --from=builder /app .
+
+ENV PATH="/app/.venv/bin:$PATH"
+
+ENV PYTHONPATH="/app"
 
 COPY /ticket_booking .
 
 EXPOSE 8000
 
-ENTRYPOINT [ "poetry","run","python", "manage.py"]
+ENTRYPOINT [ "python", "manage.py"]
 
 CMD [ "runserver", "0.0.0.0:8000"]
+
+

@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ticket-booking
+  labels:
+    app: ticket-booking
+data:
+  SECRET_KEY: "my_secret_key"
+  DEBUG: "True"
+
+  ENGINE: "django.db.backends.postgresql_psycopg2"
+  NAME: "postgres"
+  USER: "postgres"
+  PASSWORD: "mypassword"
+  HOST: "ticket-booking-db"
+  PORT: "5432"
+
+  # Email Settings
+  EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
+  EMAIL_HOST: "smtp.gmail.com"
+  EMAIL_PORT: "587"
+
+  # SITE ID
+  SITE_ID: "3"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ticket-booking-db
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: "postgres"
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "mypassword"
